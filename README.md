@@ -69,7 +69,6 @@ Visit the live demo here: https://scouting-dashboard.vercel.app/
 
 * `app/page.tsx` — Main React component fetching and displaying scouting reports with pagination.
 * `app/api/reports/route.ts` — Next.js API route that fetches data from the external scouting reports API and applies pagination.
-* `styles/` — Contains global and Tailwind CSS styles (if applicable).
 
 ---
 
