@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Scouting Reports Viewer
+
+A Next.js project that fetches scouting reports from an external API and displays them with pagination. Built with React, TypeScript, and React Query for efficient data fetching and state management.
+Visit the live demo here: https://scouting-dashboard.vercel.app/
+---
+
+## Features
+
+* Fetch scouting reports from an external API with server-side pagination.
+* Display player information including name, position, team, and scouting evaluation.
+* Client-side pagination with Previous/Next buttons.
+* Type-safe code with TypeScript.
+* Handles loading and error states gracefully.
+* Clean, minimal UI with Tailwind CSS.
+
+---
+
+## Tech Stack
+
+* **Next.js** — React framework for SSR and API routes
+* **React Query** — Data fetching and caching
+* **TypeScript** — Type safety and better developer experience
+* **Axios** — HTTP client for API calls
+* **Tailwind CSS** — Utility-first CSS framework for styling
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+* Node.js (v16+ recommended)
+* npm
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/scouting-reports-viewer.git
+   cd scouting-reports-viewer
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Run the development server:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. Open your browser and navigate to:
+
+   ```
+   http://localhost:3000
+   ```
+
+---
+
+## Project Structure
+
+* `app/page.tsx` — Main React component fetching and displaying scouting reports with pagination.
+* `app/api/reports/route.ts` — Next.js API route that fetches data from the external scouting reports API and applies pagination.
+* `styles/` — Contains global and Tailwind CSS styles (if applicable).
+
+---
+
+## Usage
+
+* Use the **Previous** and **Next** buttons at the bottom to navigate between pages of scouting reports.
+* Each report shows:
+
+  * **Player**: Player's name
+  * **Position**: Scouted playing position
+  * **Team**: Team name
+  * **Report**: Final scouting judgement
+
+---
+
+## API Details
+
+The backend API route `/api/reports` fetches data from:
+
+```
+https://f5q80hfi91.execute-api.eu-south-1.amazonaws.com/prod/get_scouting_reports
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+It supports pagination through query parameters:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* `page` (default: 1)
+* `limit` (default: 10)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Example request:
 
-## Learn More
+```
+/api/reports?page=2&limit=10
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
+This project is licensed under the MIT License.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
