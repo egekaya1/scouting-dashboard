@@ -1,18 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// Cache variables outside the handler scope (module scope)
-let cachedData: any[] | null = null
+// Cache variables outside the handler scope
+let cachedData: any[] = [] // always an array
 let cacheTimestamp = 0
 const CACHE_DURATION_MS = 1000 * 60 * 5 // 5 minutes
 
 export async function GET(req: NextRequest) {
   const now = Date.now()
-  
-  if (!cachedData || now - cacheTimestamp > CACHE_DURATION_MS) {
-    // Cache expired or empty — fetch fresh data
-    const response = await fetch('https://f5q80hfi91.execute-api.eu-south-1.amazonaws.com/prod/get_scouting_reports')
-    cachedData = await response.json()
-    cacheTimestamp = now
+
+  // Refresh cache if expired or empty
+  if (cachedData.length === 0 || now - cacheTimestamp > CACHE_DURATION_MS) {
+    try {
+      const response = await fetch(
+        'https://f5q80hfi91.execute-api.eu-south-1.amazonaws.com/prod/get_scouting_reports'
+      )
+      if (!response.ok) {
+        throw new Error(`Failed to fetch: ${response.status}`)
+      }
+      cachedData = await response.json()
+      cacheTimestamp = now
+    } catch (err) {
+      console.error(err)
+      return NextResponse.json({ error: 'Failed to fetch reports' }, { status: 500 })
+    }
   }
 
   // Extract query params
@@ -23,7 +33,7 @@ export async function GET(req: NextRequest) {
   const sortBy = searchParams.get('sort_by') || ''
   const order = searchParams.get('order') === 'desc' ? 'desc' : 'asc'
 
-  // Filter data locally
+  // Filter data
   const filtered = cachedData.filter((report: any) =>
     report.player_name.toLowerCase().includes(search) ||
     report.scouted_position.toLowerCase().includes(search) ||
@@ -31,7 +41,7 @@ export async function GET(req: NextRequest) {
     report.final_judgement.toLowerCase().includes(search)
   )
 
-  // Sort locally
+  // Sort data
   const sorted = [...filtered].sort((a, b) => {
     if (!sortBy || !(sortBy in a)) return 0
 
